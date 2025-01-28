@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/base.css' %}">
+    <style>
+        /* General Reset */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        /* Link Styles */
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Profile Message Styles */
+        .profile-message {
+            margin-top: 2rem;
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-links">
+            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+        <h1>Hello</h1>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" style="margin-left: auto;">Go to your Profile</a>
+        {% else %}
+            <div></div>
+        {% endif %}
+    </header>
+
+    <!-- Profile Message -->
+    {% if not user.is_authenticated %}
+        <p class="profile-message">You need to be logged in to access the profile.</p>
+    {% endif %}
+</body>
+</html>
