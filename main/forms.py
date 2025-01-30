@@ -46,16 +46,20 @@ class LoginForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
-    username = forms.CharField(max_length= 100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Enter your username'}))
+    username = forms.CharField(max_length= 100, required=True,
+                               widget=forms.TextInput(attrs={'placeholder': 'Enter your username'}))
 
-    email = forms.EmailField(max_length=500, required=True,widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'}))
+    email = forms.EmailField(max_length=500, required=True,
+                              widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'}))
 
-    name = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'placeholder': 'Enter your name(Optional'}))
+    name = forms.CharField(max_length=150, required=False,
+                           widget=forms.TextInput(attrs={'placeholder': 'Enter your name(Optional)'}))
 
-    phone_number = forms.CharField(max_length=15, required=True,
+    phone_number = forms.CharField(max_length=15, required=False,
                                    widget=forms.TextInput(attrs={'placeholder': 'Enter your phone number(Optional)'}))
 
-    age = forms.IntegerField(required=True, min_value=0 ,widget=forms.TextInput(attrs={'placeholder': 'Enter your age(Optional)'}))
+    age = forms.IntegerField(required=False, min_value=0 ,
+                             widget=forms.TextInput(attrs={'placeholder': 'Enter your age(Optional)'}))
 
     bio = forms.CharField(max_length=1000, required=False,
                           widget=forms.Textarea(attrs={'placeholder': 'Enter your bio (Optional)', 'rows': 4}))
