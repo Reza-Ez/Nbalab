@@ -1,4 +1,5 @@
 from django import forms
+from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import re
@@ -63,6 +64,7 @@ class EditProfileForm(forms.ModelForm):
 
     bio = forms.CharField(max_length=1000, required=False,
                           widget=forms.Textarea(attrs={'placeholder': 'Enter your bio (Optional)', 'rows': 4}))
+
 
     class Meta:
         model = User
