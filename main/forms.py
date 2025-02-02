@@ -65,6 +65,7 @@ class EditProfileForm(forms.ModelForm):
     bio = forms.CharField(max_length=1000, required=False,
                           widget=forms.Textarea(attrs={'placeholder': 'Enter your bio (Optional)', 'rows': 4}))
 
+    profile_pic = forms.ImageField(required=False)
 
     class Meta:
         model = User

@@ -49,34 +49,40 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, 'profile/profile.html')
+    # Get the profile for the logged-in user
+    profile = Profile_model.objects.get(user=request.user)
 
+    return render(request, 'profile/profile.html', {
+        'user': request.user,
+        'profile': profile
+    })
 
+@login_required
 def edit_profile_view(request):
+    profile, created = Profile_model.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
-
+        form = EditProfileForm(request.POST,request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            profile, created = EditProfile_model.objects.get_or_create()
             profile.name = form.cleaned_data.get('name')
             profile.age = form.cleaned_data.get('age')
             profile.phone_number = form.cleaned_data.get('phone_number')
             profile.bio = form.cleaned_data.get('bio')
+            if 'profile_pic' in request.FILES:
+                profile.profile_pic = request.FILES['profile_pic']
             profile.save()
 
             messages.success(request, "Profile updated successfully")
             return redirect('Edit_Profile')
 
     else:
-        profile = EditProfile_model.objects.filter().first()
         form = EditProfileForm(instance=request.user)
 
-    if profile:
-        form.fields['name'].initial = profile.name
-        form.fields['age'].initial = profile.age
-        form.fields['phone_number'].initial = profile.phone_number
-        form.fields['bio'].initial = profile.bio
 
-    return render(request, 'profile/editprofile.html', {'form': form})
+    form.fields['name'].initial = profile.name
+    form.fields['age'].initial = profile.age
+    form.fields['phone_number'].initial = profile.phone_number
+    form.fields['bio'].initial = profile.bio
+
+    return render(request, 'profile/editprofile.html', {'form': form, 'profile': profile})
