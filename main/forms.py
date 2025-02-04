@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from django.forms import ClearableFileInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import re
@@ -70,3 +71,13 @@ class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'name', 'phone_number', 'age', 'bio']
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article_model
+        fields = ['title', 'body', 'image']
+        widgets = {
+            'title' : forms.TextInput(attrs={'class':'form-control' ,'placeholder': 'Enter your title'}),
+            'body' : forms.Textarea(attrs={'class':'form-control' ,'placeholder': "Enter your article's body"}),
+            'image' : forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Import your image'}),
+        }

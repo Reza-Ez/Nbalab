@@ -42,20 +42,13 @@ def login_view(request):
     return render(request, 'authentication/login.html', {'form': form, 'error': error})
 
 def logout_view(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect('home')
-    return redirect('profile')
+    logout(request)
+    return redirect('home')
 
 @login_required
 def profile_view(request):
-    # Get the profile for the logged-in user
-    profile = Profile_model.objects.get(user=request.user)
-
-    return render(request, 'profile/profile.html', {
-        'user': request.user,
-        'profile': profile
-    })
+    profile, created = Profile_model.objects.get_or_create(user=request.user)
+    return render(request, 'profile/profile.html', {'user': request.user,'profile': profile})
 
 @login_required
 def edit_profile_view(request):
@@ -79,10 +72,33 @@ def edit_profile_view(request):
     else:
         form = EditProfileForm(instance=request.user)
 
-
     form.fields['name'].initial = profile.name
     form.fields['age'].initial = profile.age
     form.fields['phone_number'].initial = profile.phone_number
     form.fields['bio'].initial = profile.bio
 
     return render(request, 'profile/editprofile.html', {'form': form, 'profile': profile})
+
+
+def articles_view(request):
+    articles = Article_model.objects.filter(is_hidden=False).order_by('-time')
+    return render(request, 'articles/main.html', {'articles': articles})
+
+@login_required
+def my_articles_view(request):
+    my_articles = Article_model.objects.filter(author=request.user).order_by('-time')
+    return render(request, 'articles/my_articles.html', {'articles': my_articles})
+
+@login_required
+def new_article_view(request):
+    if request.method == "POST":
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.author = request.user
+            article.save()
+            messages.success(request, "Article created successfully")
+            return redirect('my_articles')
+    else:
+        form = ArticleForm()
+    return render(request, 'articles/new_article.html', {'form': form})

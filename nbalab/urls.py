@@ -28,6 +28,10 @@ urlpatterns = [
     path('Logout/', views.logout_view, name='logout'),
     path('Profile/', views.profile_view, name='profile'),
     path('Edit_Profile/', views.edit_profile_view, name='Edit_Profile'),
+    path('Articles', views.articles_view, name='articles'),
+    path('My_Articles', views.my_articles_view, name='my_articles'),
+    path('New_Article', views.new_article_view, name='new_article'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)

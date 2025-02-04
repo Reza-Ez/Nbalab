@@ -5,24 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="{% static 'styles/editprofile.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
+        .profile-pic {
+            text-align: center;
+            margin-bottom: 20px;
+        }
         .profile-pic img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            width: 180px;
+            height: 180px;
+            border-radius: 30%;
             object-fit: cover;
             display: block;
-            margin: 10px auto;
+            margin: 0 auto;
+            border: 3px solid #007bff;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body class="bg-light">
-    <div class="container mt-5">
-        <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
-            <h2 class="text-center mb-3">Edit Profile</h2>
-
+    <div class="container">
+        <div class="form-container shadow">
+            <h2>Edit Profile</h2>
             {% if messages %}
                 <div class="alert alert-success">
                     {% for message in messages %}
@@ -30,54 +65,54 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
+            <div class="profile-pic">
+                {% if profile.profile_pic %}
+                    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" id="profile-preview">
+                {% else %}
+                    <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Picture" id="profile-preview">
+                {% endif %}
+            </div>
             <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 {% csrf_token %}
-
-                <!-- Profile Picture -->
-                {% if profile.profile_pic %}
-                    <div class="profile-pic text-center">
-                        <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" id="profile-preview">
-                    </div>
-                {% endif %}
-
-                <!-- Profile Picture Upload -->
                 <div class="mb-3">
-                    <label for="profile_pic" class="form-label">Change Profile Picture</label>
+                    <label for="profile_pic" class="form-label fw-bold">Change Profile Picture</label>
                     <input type="file" name="profile_pic" id="profile_pic" class="form-control" accept="image/*" onchange="previewImage(event)">
                 </div>
-
-                {{ form.as_p }}
-
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Username</label>{{ form.username }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email</label>{{ form.email }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Name</label>{{ form.name }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Age</label>{{ form.age }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Phone Number</label>
+                     {{ form.phone_number }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Bio</label>
+                    {{ form.bio }}
+                </div>
                 <button type="submit" class="btn btn-primary w-100">Save Changes</button>
             </form>
-
             <a href="{% url 'profile' %}" class="btn btn-secondary w-100 mt-3">Back to Profile</a>
         </div>
     </div>
-
     <script>
         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function(){
                 var output = document.getElementById('profile-preview');
-                if (!output) {
-                    var img = document.createElement("img");
-                    img.id = "profile-preview";
-                    img.src = reader.result;
-                    img.classList.add("img-thumbnail", "mx-auto", "d-block");
-                    img.style.width = "150px";
-                    img.style.height = "150px";
-                    img.style.borderRadius = "50%";
-                    document.querySelector('.profile-pic').appendChild(img);
-                } else {
-                    output.src = reader.result;
-                }
+                output.src = reader.result;
             };
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

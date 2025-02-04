@@ -6,4 +6,10 @@ class Profile(admin.ModelAdmin):
     search_fields = ('user__username', 'name', 'bio')
 
 admin.site.register(Profile_model, Profile)
-# Register your models here.
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('author','body', 'title', 'time', 'image', 'is_hidden')
+    search_fields = ('title', 'author__username')
+    list_filter = ('is_hidden',)
+
+admin.site.register(Article_model, ArticleAdmin)

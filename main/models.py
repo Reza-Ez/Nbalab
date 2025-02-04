@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import CASCADE
+
 
 class Profile_model(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -17,3 +19,14 @@ class Profile_model(models.Model):
     def get_or_create_profile(user):
         profile, created = Profile_model.objects.get_or_create(user=user)
         return profile
+
+class Article_model(models.Model):
+    author = models.ForeignKey(User, on_delete = models.CASCADE)
+    title = models.CharField(max_length=200)
+    body = models.TextField()
+    image = models.ImageField(upload_to='article_images/', blank=True, null=True)
+    time = models.DateTimeField(auto_now_add=True)
+    is_hidden = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
