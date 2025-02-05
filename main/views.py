@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,8 +8,10 @@ from .models import *
 from django.contrib.auth.models import User
 from django.contrib import messages
 
+
 def home_view(request):
     return render(request, 'base/home.html')
+
 
 def register_view(request):
     if request.method == "POST":
@@ -22,6 +24,7 @@ def register_view(request):
         form = RegisterForm()
 
     return render(request, 'authentication/register.html', {'form': form})
+
 
 def login_view(request):
     form = LoginForm()
@@ -41,14 +44,17 @@ def login_view(request):
                 error = "Username or password is incorrect"
     return render(request, 'authentication/login.html', {'form': form, 'error': error})
 
+
 def logout_view(request):
     logout(request)
     return redirect('home')
+
 
 @login_required
 def profile_view(request):
     profile, created = Profile_model.objects.get_or_create(user=request.user)
     return render(request, 'profile/profile.html', {'user': request.user,'profile': profile})
+
 
 @login_required
 def edit_profile_view(request):
@@ -84,10 +90,12 @@ def articles_view(request):
     articles = Article_model.objects.filter(is_hidden=False).order_by('-time')
     return render(request, 'articles/main.html', {'articles': articles})
 
+
 @login_required
 def my_articles_view(request):
     my_articles = Article_model.objects.filter(author=request.user).order_by('-time')
     return render(request, 'articles/my_articles.html', {'articles': my_articles})
+
 
 @login_required
 def new_article_view(request):
@@ -102,3 +110,43 @@ def new_article_view(request):
     else:
         form = ArticleForm()
     return render(request, 'articles/new_article.html', {'form': form})
+
+
+@login_required
+def edit_article_view(request,article_id):
+    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+    if request.method == "POST":
+        form = ArticleForm(request.POST, request.FILES, instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect('my_articles')
+            messages.success(request, "Article updated successfully")
+    else:
+        form = ArticleForm(instance=article)
+    return render(request, 'articles/edit_article.html', {'form': form, 'article': article})
+
+
+@login_required
+def delete_article_view(request,article_id):
+    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+    article.delete()
+    messages.success(request, "Article deleted successfully")
+    return redirect('my_articles')
+
+
+@login_required
+def hide_article_view(request,article_id):
+    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+    article.is_hidden = True
+    article.save()
+    messages.success(request, "Article got Hidden successfully")
+    return redirect('my_articles')
+
+
+@login_required
+def show_article_view(request,article_id):
+    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+    article.is_hidden = False
+    article.save()
+    messages.success(request, "Article got Unhidden successfully")
+    return redirect('my_articles')

@@ -1,0 +1,79 @@
+/* General Body and Navigation */
+        body {
+            background-color: #f8f9fa;
+        }
+        nav {
+            border-bottom: 2px solid #343a40;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .navbar-text {
+            font-size: 1.4rem;
+        }
+
+        /* Article Cards */
+        .article-card {
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px 8px 0 0;
+            object-fit: cover;
+        }
+
+        .article-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #343a40;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .article-body {
+            font-size: 1.05rem;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        .article-card-body {
+            padding: 20px;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #adb5bd;
+            margin-top: 10px;
+        }
+
+        /* Button Styling */
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #138496;
+        }
+
+        /* Grid Layout */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }

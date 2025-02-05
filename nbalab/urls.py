@@ -31,6 +31,10 @@ urlpatterns = [
     path('Articles', views.articles_view, name='articles'),
     path('My_Articles', views.my_articles_view, name='my_articles'),
     path('New_Article', views.new_article_view, name='new_article'),
+    path('Edit_Article/<int:article_id>',views.edit_article_view, name='edit_article' ),
+    path('Delete_Article/<int:article_id>',views.delete_article_view, name='delete_article' ),
+    path('Hide_Article/<int:article_id>',views.hide_article_view, name='hide_article' ),
+    path('Show_Article/<int:article_id>',views.show_article_view, name='show_article' ),
 
 ]
 
