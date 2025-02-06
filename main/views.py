@@ -113,40 +113,52 @@ def new_article_view(request):
 
 
 @login_required
-def edit_article_view(request,article_id):
-    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+def edit_article_view(request,title):
+    article = get_object_or_404(Article_model,title=title)
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
             return redirect('my_articles')
-            messages.success(request, "Article updated successfully")
     else:
         form = ArticleForm(instance=article)
     return render(request, 'articles/edit_article.html', {'form': form, 'article': article})
 
 
 @login_required
-def delete_article_view(request,article_id):
-    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+def delete_article_view(request,title):
+    article = get_object_or_404(Article_model, title=title)
     article.delete()
-    messages.success(request, "Article deleted successfully")
     return redirect('my_articles')
 
 
 @login_required
-def hide_article_view(request,article_id):
-    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+def hide_article_view(request,title):
+    article = get_object_or_404(Article_model,title=title)
     article.is_hidden = True
     article.save()
-    messages.success(request, "Article got Hidden successfully")
     return redirect('my_articles')
 
 
 @login_required
-def show_article_view(request,article_id):
-    article = get_object_or_404(Article_model, id=article_id, author=request.user)
+def show_article_view(request,title):
+    article = get_object_or_404(Article_model,title=title)
     article.is_hidden = False
     article.save()
-    messages.success(request, "Article got Unhidden successfully")
     return redirect('my_articles')
+
+
+def article_url_view(request, title):
+    article = get_object_or_404(Article_model,title=title)
+    return render(request, 'articles/article_url.html', {'article': article})
+
+
+def search_view(request):
+    if request.method == "POST":
+        searched = request.POST.get('searched', '').strip()
+        if searched:
+            articles = Article_model.objects.filter(title__icontains=searched)
+        else:
+            articles = []
+        return render(request, 'base/search.html', {'articles': articles, 'searched': searched})
+    return render(request, 'base/search.html', {'articles': [], 'searched': ''})
