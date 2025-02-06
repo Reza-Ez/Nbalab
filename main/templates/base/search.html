@@ -1,0 +1,37 @@
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary">Search Results</h2>
+
+    {% if searched %}
+        <h5 class="text-center text-muted">You searched for: <strong>{{ searched }}</strong></h5>
+        <br>
+
+        {% if articles %}
+            <div class="row">
+                {% for article in articles %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card mb-4 shadow-sm">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                        {% else %}
+                            <img src="{% static 'images/default_article.jpg' %}" class="card-img-top" alt="Default Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text text-muted">{{ article.body|truncatewords:20 }}</p>
+                            <a href="{% url 'article_detail' article.id %}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-danger">No articles found for "<strong>{{ searched }}</strong>".</p>
+        {% endif %}
+
+    {% else %}
+        <p class="text-center text-muted">Start searching for articles...</p>
+    {% endif %}
+</div>
+{% endblock %}
