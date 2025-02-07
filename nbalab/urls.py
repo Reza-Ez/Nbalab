@@ -37,6 +37,7 @@ urlpatterns = [
     path('Show_Article/<str:title>',views.show_article_view, name='show_article' ),
     path('Articles/<str:title>/',views.article_url_view, name='article_url'),
     path('Search/', views.search_view, name='search'),
+    path('like/<int:article_id>',views.like_view, name='likes'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)

@@ -22,14 +22,14 @@
         }
         .navbar-text {
             font-size: 2rem;
-            color :#a8c8ce;
+            color: #a8c8ce;
         }
         .article-img {
-            width: 50%;
+            width: 60%;
             height: auto;
-            margin: -75px auto 30px;
+            margin: 20px auto;
             display: block;
-            border-radius: 20px;
+            border-radius: 15px;
         }
         .article-title {
             font-size: 2.5rem;
@@ -39,16 +39,16 @@
             margin-top: 20px;
         }
         .article-body {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #000000;
             line-height: 1.8;
-            margin-top: 30px;
+            margin-top: 20px;
             padding: 0 15px;
         }
         .article-meta {
             font-size: 1rem;
             color: #adb5bd;
-            margin-top: 40px;
+            margin-top: 10px;
             text-align: center;
         }
         .btn-info {
@@ -60,8 +60,26 @@
             background-color: #138496;
             border-color: #138496;
         }
-        .container {
-            padding: 30px 15px;
+      .like-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .like-emoji {
+            font-size: 1.7rem;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            user-select: none;
+        }
+        .liked {
+            color: green;
+            transform: scale(1.2);
+        }
+        .like-count {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #343a40;
         }
     </style>
 </head>
@@ -75,8 +93,16 @@
             <a href="{% url 'my_articles' %}" class="btn btn-info">My Articles</a>
         </div>
     </nav>
-    <div class="container mt-5">
-        {% if article.image %}
+   <div class="container mt-5">
+        {% if user.is_authenticated %}
+            <div class="like-container">
+                <span id="like-btn" class="like-emoji {% if user in article.liked_by.all %}liked{% endif %}">
+                    👍
+                </span>
+                <span id="like-count" class="like-count">{{ article.like }}</span>
+            </div>
+        {% endif %}
+      {% if article.image %}
             <img src="{{ article.image.url }}" alt="Article Image" class="article-img">
         {% else %}
             <img src="{% static 'images/default_article.jpg' %}" alt="Default Image" class="article-img">
@@ -86,9 +112,42 @@
             <p>{{ article.body }}</p>
         </div>
         <div class="article-meta">
+            <p>👀 {{ article.views }} Views</p>
             <p>Written by <strong>{{ article.author.username }}</strong> | Published on {{ article.time|date:"M d, Y" }}</p>
         </div>
+        {% if not user.is_authenticated %}
+            <p class="text-center mt-3">Please <a href="{% url 'login' %}">log in</a> to like this article.</p>
+        {% endif %}
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const likeBtn = document.getElementById("like-btn");
+            const likeCount = document.getElementById("like-count");
+            if (likeBtn) {
+                likeBtn.addEventListener("click", function () {
+                    fetch("{% url 'likes' article.id %}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.liked) {
+                            likeBtn.classList.add("liked");
+                        } else {
+                            likeBtn.classList.remove("liked");
+                        }
+                        likeCount.textContent = data.like_count;
+                    })
+                    .catch(error => console.error("Error:", error));
+                });
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

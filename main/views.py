@@ -1,3 +1,6 @@
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -5,8 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .forms import *
 from .models import *
+from django.db.models import Count
 from django.contrib.auth.models import User
 from django.contrib import messages
+
 
 
 def home_view(request):
@@ -87,8 +92,17 @@ def edit_profile_view(request):
 
 
 def articles_view(request):
-    articles = Article_model.objects.filter(is_hidden=False).order_by('-time')
-    return render(request, 'articles/main.html', {'articles': articles})
+    sort_by = request.GET.get('sort','date')
+    if sort_by == 'likes':
+        articles = Article_model.objects.order_by('-like')
+    elif sort_by == 'views':
+        articles = Article_model.objects.order_by('-views')
+    elif sort_by == 'alphabetical':
+        articles = Article_model.objects.order_by('title')
+    else :
+        articles = Article_model.objects.order_by('-time')
+
+    return render(request, 'articles/articles.html', {'articles': articles, 'sort_by': sort_by})
 
 
 @login_required
@@ -150,6 +164,9 @@ def show_article_view(request,title):
 
 def article_url_view(request, title):
     article = get_object_or_404(Article_model,title=title)
+    if request.user != article.author:
+        article.views = article.views + 1
+        article.save()
     return render(request, 'articles/article_url.html', {'article': article})
 
 
@@ -162,3 +179,20 @@ def search_view(request):
             articles = []
         return render(request, 'base/search.html', {'articles': articles, 'searched': searched})
     return render(request, 'base/search.html', {'articles': [], 'searched': ''})
+
+
+@csrf_exempt
+@login_required
+def like_view(request, article_id):
+    if request.method == "POST":
+        article = get_object_or_404(Article_model, id = article_id)
+        if request.user in article.liked_by.all():
+            article.liked_by.remove(request.user)
+            liked = False
+        else:
+            article.liked_by.add(request.user)
+            liked = True
+        article.like =  article.liked_by.count()
+        article.save()
+        return JsonResponse({'liked': liked, "like_count": article.like})
+    return JsonResponse({"error": "Invalid request"}, status=400)

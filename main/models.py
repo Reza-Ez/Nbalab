@@ -27,6 +27,9 @@ class Article_model(models.Model):
     image = models.ImageField(upload_to='article_images/', blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
     is_hidden = models.BooleanField(default=False)
+    like = models.PositiveIntegerField(default=0)
+    liked_by = models.ManyToManyField(User, related_name='liked_by', blank=True)
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title

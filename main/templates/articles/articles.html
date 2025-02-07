@@ -110,9 +110,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container d-flex justify-content-between align-items-center">
-        <!-- Left Side (Brand) -->
         <a class="navbar-brand" href="{% url 'home' %}">NBALab</a>
-
         <div class="text-white">
             <h2 class="navbar-text mb-0 text-center">All Articles</h2>
         </div>
@@ -133,41 +131,66 @@
     </div>
 </nav>
 
-    <div class="container mt-5">
-        <div class="article-grid">
-            {% for article in articles %}
-                <div class="card article-card shadow-sm">
-                    {% if article.image %}
-                        <a href="{% url 'article_url' article.title %}">
-                            <img src="{{ article.image.url }}" alt="Article Image" class="article-img">
-                        </a>
-                    {% else %}
-                        <a href="{% url 'article_url' article.title %}">
-                            <img src="{% static 'images/default_article.jpg' %}" alt="Default Image" class="article-img">
-                        </a>
-                    {% endif %}
-
-                    <div class="card-body article-card-body">
-                        <h3 class="article-title">
-                            <a href="{% url 'article_url' article.title %}" class="text-decoration-none text-dark">
-                                {{ article.title }}
-                            </a>
-                        </h3>
-                        <p class="article-body">{{ article.body|truncatewords:20 }}</p>
-
-                        <div class="article-meta">
-                            <span>By {{ article.author.username }} | {{ article.time|date:"M d, Y" }}</span>
-                        </div>
-                    </div>
-                </div>
-
-            {% empty %}
-                <p class="text-center text-muted">No articles available.</p>
-            {% endfor %}
+<!-- ✅ Sorting Feature Added Below -->
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-dark">All Articles</h2>
+        <div class="sort-options">
+            <label for="sort" class="me-2">Sort by:</label>
+            <select id="sort" class="form-select d-inline-block w-auto" onchange="sortArticles()">
+                <option value="date" {% if request.GET.sort == "date" %}selected{% endif %}>Newest</option>
+                <option value="likes" {% if request.GET.sort == "likes" %}selected{% endif %}>Most Liked</option>
+                <option value="views" {% if request.GET.sort == "views" %}selected{% endif %}>Most Viewed</option>
+                <option value="alphabetical" {% if request.GET.sort == "alphabetical" %}selected{% endif %}>Alphabetical</option>
+            </select>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="container mt-5">
+    <div class="article-grid">
+        {% for article in articles %}
+            <div class="card article-card shadow-sm">
+                {% if article.image %}
+                    <a href="{% url 'article_url' article.title %}">
+                        <img src="{{ article.image.url }}" alt="Article Image" class="article-img">
+                    </a>
+                {% else %}
+                    <a href="{% url 'article_url' article.title %}">
+                        <img src="{% static 'images/default_article.jpg' %}" alt="Default Image" class="article-img">
+                    </a>
+                {% endif %}
+
+                <div class="card-body article-card-body">
+                    <h3 class="article-title">
+                        <a href="{% url 'article_url' article.title %}" class="text-decoration-none text-dark">
+                            {{ article.title }}
+                        </a>
+                    </h3>
+                    <p class="article-body">{{ article.body|truncatewords:20 }}</p>
+
+                    <div class="article-meta">
+                        <span>By {{ article.author.username }} | {{ article.time|date:"M d, Y" }}</span>
+                        <br>
+                        <span>👀 {{ article.views }} | 👍 {{ article.like }}</span>
+                    </div>
+                </div>
+            </div>
+
+        {% empty %}
+            <p class="text-center text-muted">No articles available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function sortArticles() {
+        let sortValue = document.getElementById("sort").value;
+        window.location.href = `?sort=${sortValue}`;
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

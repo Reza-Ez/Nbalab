@@ -8,7 +8,7 @@ class Profile(admin.ModelAdmin):
 admin.site.register(Profile_model, Profile)
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('author','body', 'title', 'time', 'image', 'is_hidden')
+    list_display = ('author', 'title', 'time', 'image', 'is_hidden')
     search_fields = ('title', 'author__username')
     list_filter = ('is_hidden',)
 
