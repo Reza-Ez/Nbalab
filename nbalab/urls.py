@@ -38,6 +38,8 @@ urlpatterns = [
     path('Articles/<str:title>/',views.article_url_view, name='article_url'),
     path('Search/', views.search_view, name='search'),
     path('like/<int:article_id>',views.like_view, name='likes'),
+    path('Bookmarks/', views.bookmark_view, name='bookmark'),
+    path('save_article/<int:article_id>/', views.toggle_bookmark_view, name='save_article'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)

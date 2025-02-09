@@ -196,3 +196,24 @@ def like_view(request, article_id):
         article.save()
         return JsonResponse({'liked': liked, "like_count": article.like})
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@login_required
+def toggle_bookmark_view(request, article_id):
+    article = get_object_or_404(Article_model, id=article_id)
+    bookmark , created = Bookmark_model.objects.get_or_create(user = request.user, article = article)
+
+    if not created:
+        bookmark.delete()
+        return JsonResponse({"bookmarked": False, "message": "Bookmark Removed!"})
+
+    else :
+        return JsonResponse({"bookmarked": True, "message": "Article Saved!"})
+
+
+@login_required
+def bookmark_view(request):
+    bookmarks = Bookmark_model.objects.filter(user=request.user)
+    saved_articles = [bookmark.article for bookmark in bookmarks]
+
+    return render(request, 'articles/saved_articles.html', {'saved_articles': saved_articles})
