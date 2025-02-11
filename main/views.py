@@ -164,10 +164,32 @@ def show_article_view(request,title):
 
 def article_url_view(request, title):
     article = get_object_or_404(Article_model,title=title)
+
     if request.user != article.author:
         article.views = article.views + 1
         article.save()
-    return render(request, 'articles/article_url.html', {'article': article})
+
+    comments = Comment_model.objects.filter(article=article, reply=None).order_by('-time')
+    form = CommentForm()
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.article = article
+            new_comment.user = request.user
+
+            reply_id = request.POST.get('reply_id')
+            if reply_id:
+                reply_comment = Comment_model.objects.get(id=reply_id)
+                new_comment.reply = reply_comment
+            new_comment.save()
+            return redirect('article_url', title=article.title)
+
+    return render(request, 'articles/article_url.html', {'article': article
+        , 'comments': comments
+        , 'form': form
+            })
 
 
 def search_view(request):
@@ -217,3 +239,37 @@ def bookmark_view(request):
     saved_articles = [bookmark.article for bookmark in bookmarks]
 
     return render(request, 'articles/saved_articles.html', {'saved_articles': saved_articles})
+
+
+@csrf_exempt
+@login_required
+def add_comment_view(request, article_id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        reply_id = data.get('reply_id')
+        article = get_object_or_404(Article_model, id=article_id)
+        data = json.loads(request.body)
+        comment = data.get("comment", "")
+        reply_comment = None
+        if reply_id:
+            reply_comment = get_object_or_404(Comment_model, id=reply_id)
+        if not comment:
+            return JsonResponse({"success": False, "error": "Invalid input"} ,status=400)
+
+        article = get_object_or_404(Article_model, id=article_id)
+        comment = Comment_model.objects.create(user=request.user, article = article, comment=comment, reply=reply_comment)
+
+    return JsonResponse({"success": True, 'comment_id': comment.id ,"comment": comment.comment,
+                         "username": request.user.username, "time": comment.time.strftime('%b %d, %Y %H:%M'),
+                         'reply_id': reply_id})
+
+@login_required
+def delete_comment_view(request, article_id, comment_id):
+    article = get_object_or_404(Article_model, id=article_id)
+    comment = get_object_or_404(Comment_model, id=comment_id, article_id=article_id)
+
+    if request.user == comment.user:
+        comment.delete()
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False, "error": "You do not have permission to delete this comment"}, status=403)

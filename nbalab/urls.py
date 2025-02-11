@@ -40,6 +40,8 @@ urlpatterns = [
     path('like/<int:article_id>',views.like_view, name='likes'),
     path('Bookmarks/', views.bookmark_view, name='bookmark'),
     path('save_article/<int:article_id>/', views.toggle_bookmark_view, name='save_article'),
+    path('article/<int:article_id>/add_comment/', views.add_comment_view, name='add_comment'),
+    path('article/<int:article_id>/comment/<int:comment_id>/delete/', views.delete_comment_view, name='delete_comment'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)

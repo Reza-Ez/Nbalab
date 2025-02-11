@@ -1,90 +1,46 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
 
-/* Centered Box */
-.edit-profile-box {
-    background: white;
-    padding: 20px;
-    width: 400px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.profile-pic {
     text-align: center;
+    margin-bottom: 20px;
 }
-
-/* Form Fields */
-.edit-profile-form input,
-.edit-profile-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-/* Profile Picture Section */
-.profile-picture-section {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.profile-picture-section img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+.profile-pic img {
+    width: 180px;
+    height: 180px;
+    border-radius: 30%;
     object-fit: cover;
-    border: 3px solid #ddd;
-    display: block;
-    margin: 0 auto 10px;
-}
-
-.profile-picture-section input {
     display: block;
     margin: 0 auto;
+    border: 3px solid #007bff;
 }
-
-/* Buttons */
-.btn {
+.form-container {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.btn-primary {
     background-color: #007bff;
-    color: white;
     border: none;
     padding: 10px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
+    transition: 0.3s;
 }
-
-.btn:hover {
+.btn-primary:hover {
     background-color: #0056b3;
-}
-
-/* Success Message */
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-/* Back Link */
-.back-link {
-    display: block;
-    margin-top: 10px;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.back-link:hover {
-    text-decoration: underline;
 }

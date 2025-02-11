@@ -5,12 +5,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import re
 
+
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(max_length=500, required=True)
 
     class Meta:
         model = User
         fields = ['username' , 'email' , 'password1' , 'password2']
+
 
     #password requirements
     def clean_password1(self):
@@ -26,6 +28,7 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("Password must contain at least 1 uppercase letter")
 
         return password
+
 
     #password match
     def clean(self):
@@ -72,6 +75,7 @@ class EditProfileForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'name', 'phone_number', 'age', 'bio']
 
+
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article_model
@@ -80,4 +84,13 @@ class ArticleForm(forms.ModelForm):
             'title' : forms.TextInput(attrs={'class':'form-control' ,'placeholder': 'Enter your title'}),
             'body' : forms.Textarea(attrs={'class':'form-control' ,'placeholder': "Enter your article's body"}),
             'image' : forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Import your image'}),
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment_model
+        fields = ['comment']
+        widgets = {
+            'comment': forms.Textarea(attrs={'class':'form-control' ,'placeholder': 'Please Write your Comment', 'rows': 3}),
         }

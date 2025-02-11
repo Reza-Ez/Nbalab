@@ -7,9 +7,18 @@ class Profile(admin.ModelAdmin):
 
 admin.site.register(Profile_model, Profile)
 
+
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('author', 'title', 'time', 'image', 'is_hidden')
     search_fields = ('title', 'author__username')
     list_filter = ('is_hidden',)
 
 admin.site.register(Article_model, ArticleAdmin)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'article', 'comment', 'time')
+    search_fields = ('user', 'comment')
+    list_filter = ('time',)
+
+admin.site.register(Comment_model, CommentAdmin)

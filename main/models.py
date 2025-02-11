@@ -44,3 +44,14 @@ class Bookmark_model(models.Model):
 
     def __str__(self):
         return f"{self.user.username} saved {self.article.title}"
+
+
+class Comment_model(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    article = models.ForeignKey('Article_model', on_delete = models.CASCADE, related_name='comments')
+    comment = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    reply = models.ForeignKey('self', on_delete = models.CASCADE, null=True,blank=True, related_name='replies')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.comment[:30]}"
