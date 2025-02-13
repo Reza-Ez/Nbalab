@@ -53,7 +53,8 @@
 
         <div class="article-meta">
             <p>👀 {{ article.views }} Views</p>
-            <p>Written by <strong>{{ article.author.username }}</strong> | Published on {{ article.time|date:"M d, Y" }}</p>
+            <p>Written by <a href="{% url 'public_profile' article.author.username %}">{{ article.author.username }}</a> | Published on {{ article.time|date:"M d, Y" }}</p>
+
         </div>
 
         {% if not user.is_authenticated %}
@@ -66,7 +67,7 @@
             <form id="comment-form">
                 {% csrf_token %}
                 <textarea id="comment-text" class="form-control" placeholder="Write a comment..." required></textarea>
-                <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                <button type="submit" class="btn btn-dark mt-2">Post Comment</button>
             </form>
         {% else %}
             <p>Please <a href="{% url 'login' %}">log in</a> to comment.</p>
@@ -194,7 +195,7 @@
                     replyBox.id = `reply-box-${commentId}`;
                     replyBox.innerHTML = `
                         <textarea class="form-control reply-text" placeholder="Write Your Reply..." rows="2"></textarea>
-                        <button class="btn btn-primary btn-sm mt-2 send-reply" data-id="${commentId}">Post Reply</button>
+                        <button class="btn btn-dark btn-sm mt-2 send-reply" data-id="${commentId}">Post Reply</button>
                     `;
                     e.target.parentElement.appendChild(replyBox);
                 }

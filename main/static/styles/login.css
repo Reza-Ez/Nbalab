@@ -40,7 +40,7 @@ form {
 
 /* Button Styling */
 .btn {
-    background-color: #007bff; /* Blue background */
+    background-color: black; /* Blue background */
     color: #ffffff; /* White text */
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
@@ -53,7 +53,7 @@ form {
 }
 
 .btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #595959; /* Darker blue on hover */
 }
 
 .btn:focus {
@@ -68,7 +68,7 @@ form {
 
 /* Links */
 a {
-    color: #007bff;
+    color: black;
     text-decoration: none;
     font-weight: bold;
 }

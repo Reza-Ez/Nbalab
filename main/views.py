@@ -273,3 +273,32 @@ def delete_comment_view(request, article_id, comment_id):
         return JsonResponse({"success": True})
 
     return JsonResponse({"success": False, "error": "You do not have permission to delete this comment"}, status=403)
+
+
+def public_profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    articles = Article_model.objects.filter(author=user)
+    followed_users = Follow_model.objects.filter(follower=request.user).values_list('followed', flat=True)
+    context = {
+        'articles': articles,
+        'profile_user': user,
+        'followed_users': list(followed_users),
+    }
+    return render(request, 'profile/public_profile.html', context)
+
+
+@login_required
+def follow_view(request,username):
+    user_to_follow = get_object_or_404(User, username=username)
+    if request.user == user_to_follow:
+        return JsonResponse({'error_message': "You Can't Follow Yourself"}, status=400)
+
+    follow, created = Follow_model.objects.get_or_create(follower=request.user, followed=user_to_follow)
+
+    if not created:
+        follow.delete()
+        followers_count = Follow_model.objects.filter(follower=user_to_follow).count()
+        return JsonResponse({'followed':False, 'followers_count': followers_count})
+
+    followers_count = user_to_follow.followers.count()
+    return JsonResponse({'followed': created, 'followers_count': followers_count})

@@ -67,7 +67,7 @@
                             {{ article.title }}
                         </a>
                     </h3>
-                    <p class="article-body">{{ article.body|truncatewords:20 }}</p>
+                    <p class="article-body">{{ article.body|truncatewords:10 }}</p>
 
                     <div class="article-meta">
                         <span>By {{ article.author.username }} | {{ article.time|date:"M d, Y" }}</span>

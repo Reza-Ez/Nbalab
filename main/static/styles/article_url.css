@@ -14,7 +14,7 @@ nav {
 }
 .navbar-text {
     font-size: 2rem;
-    color: #a8c8ce;
+    color: white   ;
 }
 .article-img {
     width: 60%;
@@ -44,13 +44,14 @@ nav {
     text-align: center;
 }
 .btn-info {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
+    background-color: black;
+    border-color: #595959;
     color: white;
 }
 .btn-info:hover {
-    background-color: #138496;
-    border-color: #138496;
+    background-color: #595959;
+    border-color: #595959;
+    color: white;
 }
 .like-container {
     display: flex;
@@ -84,7 +85,7 @@ nav {
 
 }
 .bookmarked {
-    color: #10b84d;
+    color: black;
 }
 .comment-box {
     margin-top: 40px;
@@ -105,12 +106,12 @@ nav {
 }
 .comment-meta {
     font-size: 0.9rem;
-    color: #6c757d;
+    color: white;
 }
 .comment-username {
     font-weight: bold;
-    color: #007bff;
-    font-size: 1.1rem;
+    color: #3c3c3c;
+    font-size: 1.5rem;
 }
 .comment-actions {
     font-size: 0.9rem;

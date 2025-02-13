@@ -1,116 +1,132 @@
-.register-box {
-    max-width: 400px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.register-box h1 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 1rem;
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
+/* Heading */
+.register-box h1 {
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 20px;
+}
+
+/* Form */
 .register-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
 }
 
-.register-form .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
 }
 
-.register-form label {
-    font-weight: bold;
-    color: #555;
+.form-group label {
+    font-weight: 500;
+    color: #2d3436;
+    display: block;
+    margin-bottom: 5px;
 }
 
-.register-form input[type="text"],
-.register-form input[type="email"],
-.register-form input[type="password"] {
+.form-group input {
     width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+    padding: 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
-.register-form input[type="text"]:focus,
-.register-form input[type="email"]:focus,
-.register-form input[type="password"]:focus {
-    border-color: #007bff;
+.form-group input:focus {
+    border-color: black;
     outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    box-shadow: 0px 0px 8px rgba(9, 132, 227, 0.3);
 }
 
-.register-form .btn {
-    display: inline-block;
-    background-color: #007bff;
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 0.8rem;
+/* Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: black;
     border: none;
-    border-radius: 4px;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 5px;
     cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
+    transition: 0.3s;
 }
 
-.register-form .btn:hover {
-    background-color: #0056b3;
+.btn:hover {
+    background: #595959;
 }
 
+/* Error Messages */
 .form-errors {
-    background-color: #ffdddd;
-    border: 1px solid #ff5c5c;
-    color: #a80000;
-    padding: 1rem;
-    border-radius: 4px;
-    margin: 1rem 0;
+    background: #ff7675;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    list-style-type: none;
 }
 
-.form-errors ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.form-errors li {
-    margin-bottom: 0.5rem;
-}
-
+/* Login Link */
 .text-center {
-    text-align: center;
+    margin-top: 15px;
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+.text-center a {
+    color: #0984e3;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.register-form .form-group input {
-    margin-bottom: 1rem;
+.text-center a:hover {
+    text-decoration: underline;
 }
 
-/* Hide help text */
-.help-text {
-    display: none;
+/* Responsive Design */
+@media (max-width: 450px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
 }
 
-/* Error handling */
-input:invalid {
-    border-color: #ff5c5c;
-}
-
-input:invalid:focus {
-    box-shadow: 0 0 4px rgba(255, 92, 92, 0.5);
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

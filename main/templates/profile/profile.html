@@ -42,7 +42,7 @@
 
     <div class="container mt-5">
         <div class="profile-card text-center shadow">
-            <h2 class="mb-3 text-info">Profile</h2>
+            <h2 class="mb-3 text-dark">Profile</h2>
             <div class="profile-pic">
                 {% if profile.profile_pic %}
                     <img src="{{ profile.profile_pic.url }}" alt="Profile Picture">
@@ -51,15 +51,15 @@
                 {% endif %}
             </div>
             <h4 class="text-dark">{{ user.username }}</h4>
-            <p class="text-muted">{{ user.email }}</p>
+            <p class="text-dark">{{ user.email }}</p>
             <hr>
             <p><strong>Name:</strong> {{ profile.name }}</p>
             <p><strong>Age:</strong> {{ profile.age }}</p>
             <p><strong>Phone:</strong> {{ profile.phone_number }}</p>
             <p><strong>Bio:</strong> {{ profile.bio }}</p>
             <hr>
-            <a href="{% url 'Edit_Profile' %}" class="btn btn-outline-primary btn-custom">Edit Profile</a>
-            <a href="{% url 'bookmark' %}" class="btn btn-outline-info btn-custom">Saved Articles</a>
+            <a href="{% url 'Edit_Profile' %}" class="btn btn-outline-secondary btn-custom">Edit Profile</a>
+            <a href="{% url 'bookmark' %}" class="btn btn-outline-dark btn-custom">Saved Articles</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-custom">Log Out</a>
         </div>
     </div>
